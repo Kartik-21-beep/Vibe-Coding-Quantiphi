@@ -29,8 +29,9 @@ async function convert() {
 async function loadHistory(source, target) {
   const response = await api(`/api/history?source=${source}&target=${target}`);
   if (!response.points || response.points.length < 2) {
-    $("chart").innerHTML = "";
-    $("trend-change").textContent = "Unavailable";
+    $("chart").innerHTML = `<text x="450" y="120" text-anchor="middle" fill="#75827c" font-size="14">${response.error || "Historical rates unavailable"}</text>`;
+    $("trend-change").textContent = response.error ? "API unavailable" : "Unavailable";
+    $("chart").setAttribute("aria-label", response.error || "Historical trend unavailable");
     return;
   }
   const points = response.points;

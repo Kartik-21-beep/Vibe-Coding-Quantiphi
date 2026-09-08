@@ -1,6 +1,8 @@
 import json
 import os
+import random
 import sqlite3
+from builtins import KeyError, OSError, ValueError, bool, dict, int, len, print, round, sorted, str
 from datetime import date, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -10,11 +12,19 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).parent
 DB_PATH = ROOT / "currency_converter.db"
 API_KEY = os.getenv("EXCHANGERATE_API_KEY", "")
-EXCHANGERATE_HOST_KEY = os.getenv("EXCHANGERATE_HOST_ACCESS_KEY", "")
 DEMO_RATES = {
     "USD": 1.0, "EUR": 0.92, "GBP": 0.78, "INR": 83.1, "JPY": 149.2,
     "AUD": 1.52, "CAD": 1.36, "CHF": 0.9, "CNY": 7.24, "SGD": 1.34,
 }
+
+
+def host_api_key():
+    return (
+        os.getenv("EXCHANGERATE_HOST_ACCESS_KEY")
+        or os.getenv("EXCHANGERATE_HOST_API_KEY")
+        or os.getenv("EXCHANGE_RATE_HOST_API_KEY")
+        or ""
+    ).strip()
 
 
 def db():
@@ -43,6 +53,29 @@ def live_rates(base):
                     return payload["conversion_rates"], "live"
         except (OSError, ValueError):
             pass
+    access_key = host_api_key()
+    if access_key:
+        try:
+            params = urlencode({"access_key": access_key, "source": base})
+            with urlopen(
+                Request(
+                    f"https://api.exchangerate.host/live?{params}",
+                    headers={"User-Agent": "CurrencyCanvas/1.0"},
+                ),
+                timeout=8,
+            ) as response:
+                payload = json.loads(response.read())
+                if payload.get("success") and payload.get("quotes"):
+                    prefix = f"{base}"
+                    rates = {
+                        code.replace(prefix, ""): value
+                        for code, value in payload["quotes"].items()
+                        if code.startswith(prefix)
+                    }
+                    rates[base] = 1
+                    return rates, "live"
+        except (OSError, ValueError):
+            pass
     try:
         with urlopen(
             Request(
@@ -60,7 +93,27 @@ def live_rates(base):
     return {currency: round(rate / base_rate, 6) for currency, rate in DEMO_RATES.items()}, "demo"
 
 
+def demo_historical_rates(source, target):
+    source_rate = DEMO_RATES.get(source, 1)
+    target_rate = DEMO_RATES.get(target, 1)
+    current_rate = target_rate / source_rate
+    points = []
+    for index in range(30):
+        current_rate *= 1 + random.uniform(-0.012, 0.012)
+        points.append(
+            {
+                "date": (date.today() - timedelta(days=29 - index)).isoformat(),
+                "rate": round(current_rate, 6),
+            }
+        )
+    return points
+
+
 def historical_rates(source, target):
+    access_key = host_api_key()
+    if not access_key:
+        return demo_historical_rates(source, target)
+
     end = date.today()
     start = end - timedelta(days=29)
     params = {
@@ -69,20 +122,19 @@ def historical_rates(source, target):
         "source": source,
         "currencies": target,
     }
-    if EXCHANGERATE_HOST_KEY:
-        params["access_key"] = EXCHANGERATE_HOST_KEY
+    params["access_key"] = access_key
     url = f"https://api.exchangerate.host/timeseries?{urlencode(params)}"
     with urlopen(Request(url, headers={"User-Agent": "CurrencyCanvas/1.0"}), timeout=8) as response:
         payload = json.loads(response.read())
     if payload.get("success") is False:
-        raise ValueError(payload.get("error", {}).get("info", "ExchangeRate.host request failed"))
+        return demo_historical_rates(source, target)
     points = [
         {"date": day, "rate": values[target]}
         for day, values in sorted(payload.get("rates", {}).items())
         if target in values
     ]
     if not points:
-        raise ValueError("Historical rates were not returned")
+        return demo_historical_rates(source, target)
     return points
 
 
@@ -110,9 +162,23 @@ class Handler(BaseHTTPRequestHandler):
                 points = historical_rates(source, target) if source != target else [
                     {"date": date.today().isoformat(), "rate": 1}
                 ]
-                self.json_response({"source": source, "target": target, "points": points, "source_type": "live"})
-            except (OSError, ValueError, KeyError) as error:
-                self.json_response({"error": f"Historical rates unavailable: {error}"}, 502)
+                self.json_response(
+                    {
+                        "source": source,
+                        "target": target,
+                        "points": points,
+                        "source_type": "demo" if not host_api_key() else "live",
+                    }
+                )
+            except (OSError, ValueError, KeyError):
+                self.json_response(
+                    {
+                        "source": source,
+                        "target": target,
+                        "points": demo_historical_rates(source, target),
+                        "source_type": "demo",
+                    },
+                )
         elif parsed.path == "/api/favorites":
             with db() as connection:
                 rows = connection.execute("SELECT source, target FROM favorites ORDER BY created_at DESC").fetchall()
