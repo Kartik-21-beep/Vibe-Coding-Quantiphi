@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Currency Canvas — smart conversion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">↗</span> currency<span>canvas</span></a>
+    <nav><a class="active" href="#converter">Converter</a><a href="#travel">Travel budget</a></nav>
+    <div class="live-pill"><i></i> Rates updated just now</div>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow">GLOBAL MONEY, SIMPLIFIED</div>
+      <h1>Know what your money<br><em>is really worth.</em></h1>
+      <p>Fast, clear currency conversion with a little more context.</p>
+    </section>
+
+    <section class="workspace" id="converter">
+      <div class="converter-card">
+        <div class="card-heading"><div><span class="eyebrow">QUICK CONVERT</span><h2>What are you sending?</h2></div><button class="icon-btn" id="swap" aria-label="Swap currencies">⇄</button></div>
+        <div class="currency-row">
+          <label>FROM <div class="select-wrap"><select id="source"></select><span>⌄</span></div></label>
+          <label>TO <div class="select-wrap"><select id="target"></select><span>⌄</span></div></label>
+        </div>
+        <label class="amount-label">AMOUNT <div class="amount-input"><span id="source-symbol">$</span><input id="amount" type="number" min="0" value="1000"></div></label>
+        <div class="result"><div><span id="result-label">1,000 USD equals</span><strong id="result">—</strong></div><button class="primary-btn" id="convert">Convert <span>→</span></button></div>
+      </div>
+      <aside class="favorites-card">
+        <div class="card-heading"><div><span class="eyebrow">YOUR SHORTLIST</span><h2>Favorites</h2></div><button class="text-btn" id="add-favorite">+ Add pair</button></div>
+        <div id="favorites" class="favorites-list"></div>
+      </aside>
+    </section>
+
+    <section class="trend-card">
+      <div class="trend-header"><div><span class="eyebrow">MARKET CONTEXT · LAST 30 DAYS</span><h2>Exchange rate trend</h2></div><div class="trend-stat"><span id="trend-pair">USD / EUR</span><strong id="trend-change">—</strong></div></div>
+      <div class="chart-wrap"><svg id="chart" viewBox="0 0 900 240" preserveAspectRatio="none" role="img" aria-label="Exchange rate trend chart"></svg><div class="chart-labels"><span>30 days ago</span><span>Today</span></div></div>
+    </section>
+
+    <section class="travel-section" id="travel">
+      <div class="section-intro"><div><span class="eyebrow">TRAVEL BUDGETING MODE</span><h2>Plan once. Compare everywhere.</h2><p>See your home budget in five major currencies at a glance.</p></div><label class="toggle"><input type="checkbox" id="travel-toggle"><span></span> Enable mode</label></div>
+      <div class="budget-panel" id="budget-panel">
+        <label>YOUR BUDGET <div class="budget-input"><span id="budget-symbol">$</span><input id="budget" type="number" value="2500" min="0"></div></label>
+        <div id="budget-table" class="budget-table"></div>
+      </div>
+    </section>
+  </main>
+  <footer><span>currencycanvas © 2024</span><span>Rates provided by ExchangeRate API · For informational use</span></footer>
+  <script src="/app.js"></script>
+</body>
+</html>

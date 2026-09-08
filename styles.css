@@ -1,0 +1,530 @@
+:root {
+    --ink: #1f2b27;
+    --muted: #75827c;
+    --line: #dfe6e1;
+    --mint: #c8f2de;
+    --green: #27966b;
+    --orange: #f3a55b;
+    --paper: #f7faf8;
+    --white: #fff
+}
+
+* {
+    box-sizing: border-box
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 14px "DM Sans", sans-serif
+}
+
+h1,
+h2 {
+    font-family: "Space Grotesk", sans-serif;
+    margin: 0
+}
+
+h2 {
+    font-size: 21px;
+    letter-spacing: -.04em
+}
+
+.topbar {
+    height: 74px;
+    padding: 0 max(5vw, 32px);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    background: #fbfcfb
+}
+
+.brand {
+    color: var(--ink);
+    font: 700 18px "Space Grotesk";
+    text-decoration: none;
+    letter-spacing: -.06em
+}
+
+.brand span:last-child {
+    color: var(--green)
+}
+
+.brand-mark {
+    display: inline-grid;
+    place-items: center;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 25px;
+    height: 25px;
+    margin-right: 7px
+}
+
+.topbar nav {
+    display: flex;
+    gap: 28px;
+    margin-left: 10vw
+}
+
+.topbar nav a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 27px 0
+}
+
+.topbar nav .active {
+    color: var(--ink);
+    border-bottom: 2px solid var(--green);
+    font-weight: 600
+}
+
+.live-pill {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.live-pill i {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--green);
+    border-radius: 50%;
+    margin-right: 6px
+}
+
+.hero,
+main {
+    max-width: 1080px;
+    margin: auto
+}
+
+.hero {
+    padding: 68px 0 42px
+}
+
+.eyebrow {
+    font-size: 10px;
+    letter-spacing: .15em;
+    font-weight: 700;
+    color: var(--green)
+}
+
+h1 {
+    font-size: 52px;
+    line-height: 1.04;
+    letter-spacing: -.065em;
+    margin: 15px 0
+}
+
+.hero h1 em {
+    font-style: normal;
+    color: var(--green)
+}
+
+.hero p,
+.section-intro p {
+    color: var(--muted);
+    font-size: 15px
+}
+
+.workspace {
+    display: grid;
+    grid-template-columns: 1.3fr .7fr;
+    gap: 18px
+}
+
+.converter-card,
+.favorites-card,
+.trend-card,
+.budget-panel {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 26px
+}
+
+.card-heading,
+.trend-header,
+.section-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start
+}
+
+.card-heading {
+    margin-bottom: 25px
+}
+
+.card-heading h2 {
+    margin-top: 7px
+}
+
+.icon-btn {
+    border: 1px solid var(--line);
+    background: var(--paper);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    color: var(--green);
+    cursor: pointer
+}
+
+.currency-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px
+}
+
+.currency-row label,
+.amount-label,
+.budget-panel label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    color: var(--muted)
+}
+
+select,
+.amount-input,
+.budget-input {
+    font: 600 16px "DM Sans";
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    height: 51px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 0 14px
+}
+
+.select-wrap {
+    position: relative
+}
+
+.select-wrap select {
+    appearance: none;
+    padding-right: 32px
+}
+
+.select-wrap span {
+    position: absolute;
+    right: 15px;
+    top: 25px;
+    color: var(--green)
+}
+
+.amount-label {
+    display: block;
+    margin-top: 18px
+}
+
+.amount-input,
+.budget-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px
+}
+
+.amount-input span,
+.budget-input span {
+    color: var(--green)
+}
+
+input {
+    border: 0;
+    outline: 0;
+    font: inherit;
+    width: 100%;
+    background: transparent
+}
+
+.result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    margin-top: 25px;
+    padding-top: 20px
+}
+
+.result span {
+    color: var(--muted);
+    font-size: 12px
+}
+
+.result strong {
+    display: block;
+    font: 700 31px "Space Grotesk";
+    margin-top: 3px
+}
+
+.primary-btn {
+    background: var(--green);
+    border: 0;
+    color: #fff;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-weight: 700;
+    cursor: pointer
+}
+
+.primary-btn span {
+    color: #fff;
+    margin-left: 10px
+}
+
+.text-btn {
+    background: none;
+    border: 0;
+    color: var(--green);
+    font-weight: 700;
+    cursor: pointer
+}
+
+.favorites-list {
+    display: grid;
+    gap: 12px
+}
+
+.favorite {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 13px;
+    cursor: pointer
+}
+
+.favorite strong {
+    font-size: 14px
+}
+
+.favorite small {
+    color: var(--muted);
+    display: block;
+    margin-top: 3px
+}
+
+.favorite button {
+    border: 0;
+    background: none;
+    color: #adb8b2;
+    cursor: pointer;
+    font-size: 18px
+}
+
+.trend-card {
+    margin-top: 18px;
+    padding-bottom: 18px
+}
+
+.trend-stat {
+    text-align: right
+}
+
+.trend-stat span {
+    display: block;
+    color: var(--muted);
+    font-size: 12px
+}
+
+.trend-stat strong {
+    color: var(--green);
+    font-size: 18px
+}
+
+.chart-wrap {
+    margin-top: 20px;
+    height: 240px
+}
+
+.chart-wrap svg {
+    width: 100%;
+    height: 210px;
+    overflow: visible
+}
+
+.chart-grid {
+    stroke: #e8eeea;
+    stroke-width: 1
+}
+
+.chart-line {
+    fill: none;
+    stroke: var(--green);
+    stroke-width: 3;
+    stroke-linecap: round
+}
+
+.chart-area {
+    fill: url(#area)
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-between;
+    color: #a0aca5;
+    font-size: 11px
+}
+
+.travel-section {
+    padding: 70px 0
+}
+
+.section-intro {
+    align-items: center;
+    margin-bottom: 20px
+}
+
+.section-intro h2 {
+    font-size: 28px;
+    margin-top: 8px
+}
+
+.section-intro p {
+    margin: 8px 0 0
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700
+}
+
+.toggle input {
+    display: none
+}
+
+.toggle span {
+    width: 40px;
+    height: 22px;
+    border-radius: 20px;
+    background: #dce5df;
+    position: relative;
+    cursor: pointer
+}
+
+.toggle span:after {
+    content: "";
+    position: absolute;
+    background: #fff;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: .2s
+}
+
+.toggle input:checked+span {
+    background: var(--green)
+}
+
+.toggle input:checked+span:after {
+    left: 20px
+}
+
+.budget-panel {
+    display: none;
+    grid-template-columns: 230px 1fr;
+    gap: 30px;
+    align-items: center
+}
+
+.budget-panel.visible {
+    display: grid
+}
+
+.budget-table {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px
+}
+
+.budget-cell {
+    padding: 13px 10px;
+    border-left: 1px solid var(--line)
+}
+
+.budget-cell b {
+    display: block;
+    font-size: 12px;
+    color: var(--muted)
+}
+
+.budget-cell strong {
+    display: block;
+    font: 600 20px "Space Grotesk";
+    margin-top: 7px
+}
+
+.budget-cell small {
+    color: var(--green);
+    font-size: 11px
+}
+
+footer {
+    max-width: 1080px;
+    margin: auto;
+    border-top: 1px solid var(--line);
+    padding: 25px 0 35px;
+    color: #a0aca5;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between
+}
+
+@media(max-width:700px) {
+    .topbar {
+        padding: 0 20px
+    }
+
+    .topbar nav {
+        display: none
+    }
+
+    .hero {
+        padding: 45px 20px 30px
+    }
+
+    main {
+        padding: 0 20px
+    }
+
+    .hero h1 {
+        font-size: 41px
+    }
+
+    .workspace {
+        grid-template-columns: 1fr
+    }
+
+    .budget-panel.visible {
+        grid-template-columns: 1fr
+    }
+
+    .budget-table {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    footer {
+        margin: 0 20px;
+        display: block
+    }
+
+    footer span {
+        display: block;
+        margin: 5px 0
+    }
+}
